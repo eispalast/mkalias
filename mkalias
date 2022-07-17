@@ -1,34 +1,61 @@
 #!/bin/python3
+import os
+user = os.environ['USER']
 
-alias_path = r"/home/timo/.zsh_aliases"
-alias_file = open(alias_path,"r")
+config_dir=r"/home/"+user+"/.config/mkalias/"
+config_path = config_dir+"mkaliasconf"
 
-lines = alias_file.readlines()
-alias_file.close()
+configuration = {}
 
-categories = []
-for index,line in enumerate(lines):
-    if line[0] == "#":
-        categories.append((index,line[1:-1]))
-categories.append((len(lines),"New category"))
+def read_config():
+    if os.path.isfile(config_path):
+        config_file = open(config_path,"r")
+        for l in config_file.readlines():
+            splitted = l.split('=')
+            configuration[splitted[0].strip()] = splitted[1].strip()
+        config_file.close()
+    else:
+        if not os.path.isdir(config_dir):
+            os.makedirs(config_dir)
+        config_file = open(config_path,"w")
+        alias_path = input("Path to alias_file: ")
+        config_file.write("alias_path="+alias_path)
+        config_file.close()
+        read_config()
 
-new_alias = input("New alias: ")
-new_command = input("Command: ")
-print("Choose category:")
-for id, c in enumerate(categories):
-    print(id,(c[1]).lstrip())
-chosen_category_str = input("Chose a number (default 0): ")
-try:
-    chosen_category_int = int(chosen_category_str)
-except:
-    chosen_category_int = 0
+def main():
+    read_config()
+    alias_file = open(configuration["alias_path"],"r")
 
-if chosen_category_int == len(categories)-1:
-    new_category_name = input("Enter name for new category: ")
-    lines.append("\n# "+new_category_name+"\n")
-lines.insert((categories[chosen_category_int])[0]+1,f"alias {new_alias}=\'{new_command}\'\n")
+    lines = alias_file.readlines()
+    alias_file.close()
 
-output_file = open(alias_path,"w")
-output_file.writelines(lines)
-output_file.close()
+    categories = []
+    for index,line in enumerate(lines):
+        if line[0] == "#":
+            categories.append((index,line[1:-1]))
+    categories.append((len(lines),"New category"))
 
+    new_alias = input("New alias: ")
+    new_command = input("Command: ")
+    print("Choose category:")
+    for id, c in enumerate(categories):
+        print(id,(c[1]).lstrip())
+    chosen_category_str = input("Chose a number (default 0): ")
+    try:
+        chosen_category_int = int(chosen_category_str)
+    except:
+        chosen_category_int = 0
+
+    if chosen_category_int == len(categories)-1:
+        new_category_name = input("Enter name for new category: ")
+        lines.append("\n# "+new_category_name+"\n")
+    lines.insert((categories[chosen_category_int])[0]+1,f"alias {new_alias}=\'{new_command}\'\n")
+
+    output_file = open(configuration["alias_path"],"w")
+    output_file.writelines(lines)
+    output_file.close()
+    print("Done. Don't forget to source your config or start a new shell instance.")
+
+if __name__=="__main__":
+    main()
