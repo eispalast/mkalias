@@ -6,7 +6,7 @@ You need Python installed.
 
 Simply copy `mkalias` anywhere in your PATH and make it executable with 
 
-		chmod +x /path/to/mkalias
+	chmod +x /path/to/mkalias
 
 When you start `mkalias` for the first time, it asks you for the path to your aliases file and stores this information in `/home/yourusername/.config/mkalias/mkaliasconf`. 
 
@@ -34,5 +34,5 @@ alias vvi='nvim ~/.config/nvim/init.vim'
 and so on.
 
 ## Usage
-Just type `mkaliases`. It asks you for a new alias. It then asks you for the command to be executed. Finally you are asked which in which category the new alias should go in. You are shown a list of all existing categorys + the option for a new category. Type the number corresponding to the category. In case you chose to create a new category you are asked for a new category name. Type it in, hit enter and the new alias is stored in your configuration file. Don't forget to source the shell configuration file or start a new shell instance after creating a new alias.
+Just type `mkalias`. It asks you for a new alias. It then asks you for the command to be executed. Finally you are asked which in which category the new alias should go in. You are shown a list of all existing categorys + the option for a new category. Type the number corresponding to the category. In case you chose to create a new category you are asked for a new category name. Type it in, hit enter and the new alias is stored in your configuration file. Don't forget to source the shell configuration file or start a new shell instance after creating a new alias.
 
