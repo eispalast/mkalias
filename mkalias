@@ -1,5 +1,7 @@
 #!/bin/python3
-import os
+COLOR_BOLD = '\033[1m'
+COLOR_NORM = '\033[0m'
+import os, sys, getopt
 user = os.environ['USER']
 
 config_dir=r"/home/"+user+"/.config/mkalias/"
@@ -22,10 +24,30 @@ def read_config():
         config_file.write("alias_path="+alias_path)
         config_file.close()
         read_config()
+        
+def list_aliases(alias_file):
+    cat_border = "/---\n| "
+    for line in alias_file.readlines():
+        if '#' in line:
+            print(cat_border+line[2:-1]+"\n|---")
+            cat_border = "\\---\n\n/---\n| " 
+        elif "alias" in line:
+            print("| "+line[6:-1])
+    print("\\---")
 
-def main():
+def main(argv):
     read_config()
     alias_file = open(configuration["alias_path"],"r")
+    
+    try:
+        opts, args = getopt.getopt(argv,"l",["list"])
+    except getopt.GetoptError:
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-l","--list"):
+            list_aliases(alias_file)
+            exit(0)
+
 
     lines = alias_file.readlines()
     alias_file.close()
@@ -58,4 +80,4 @@ def main():
     print("Done. Don't forget to source your config or start a new shell instance.")
 
 if __name__=="__main__":
-    main()
+    main(sys.argv[1:])

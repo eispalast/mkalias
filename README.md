@@ -36,3 +36,4 @@ and so on.
 ## Usage
 Just type `mkalias`. It asks you for a new alias. It then asks you for the command to be executed. Finally you are asked which in which category the new alias should go in. You are shown a list of all existing categorys + the option for a new category. Type the number corresponding to the category. In case you chose to create a new category you are asked for a new category name. Type it in, hit enter and the new alias is stored in your configuration file. Don't forget to source the shell configuration file or start a new shell instance after creating a new alias.
 
+You can list/print all your currently available aliases with `mkalias -l` 
