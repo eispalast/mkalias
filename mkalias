@@ -27,13 +27,14 @@ def read_config():
         
 def list_aliases(alias_file):
     cat_border = "/---\n| "
+    cat_border = "┌──────\n|"
     for line in alias_file.readlines():
         if '#' in line:
-            print(cat_border+line[2:-1]+"\n|---")
-            cat_border = "\\---\n\n/---\n| " 
+            print(cat_border+line[2:-1]+"\n|──────")
+            cat_border = "└───────\n\n┌──────\n| " 
         elif "alias" in line:
             print("| "+line[6:-1])
-    print("\\---")
+    print("└──────")
 
 def main(argv):
     read_config()
